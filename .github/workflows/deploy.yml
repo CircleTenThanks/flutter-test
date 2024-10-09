@@ -1,0 +1,45 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Deploy Flutter Web
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Flutterのセットアップ
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.0'  # 使用しているFlutterのバージョンを指定
+
+      # 依存関係のインストール
+      - name: Install dependencies
+        run: flutter pub get
+
+      # プロジェクトの分析（オプション）
+      - name: Analyze project source
+        run: flutter analyze
+
+      # Webアプリのビルド
+      - name: Build the web app
+        run: flutter build web --release
+
+      # GitHub Pagesにデプロイ
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+          publish_branch: gh-pages  # GitHub Pages用のブランチ
