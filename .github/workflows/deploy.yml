@@ -22,7 +22,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.10.0'  # 適切なFlutterのバージョンに変更
+          flutter-version: '3.19.0'  # pubspec.yamlに合わせて更新
 
       # 依存関係のインストール
       - name: Install dependencies
@@ -43,3 +43,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
           publish_branch: gh-pages  # GitHub Pages用のブランチ
+
