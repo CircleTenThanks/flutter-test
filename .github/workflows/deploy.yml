@@ -22,7 +22,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.10.0'  # 使用しているFlutterのバージョンを指定
+          flutter-version: '3.10.0'  # 適切なFlutterのバージョンに変更
 
       # 依存関係のインストール
       - name: Install dependencies
