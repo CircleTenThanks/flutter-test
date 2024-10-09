@@ -3,44 +3,46 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Deploy Flutter Web
+name: Deploy Flutter Web to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      # Flutterのセットアップ
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.3'  # Flutterのバージョンを更新
+          flutter-version: '3.24.3'  # 使用するFlutterのバージョンを指定
 
-      # 依存関係のインストール
       - name: Install dependencies
         run: flutter pub get
 
-      # プロジェクトの分析（オプション）
-      - name: Analyze project source
-        run: flutter analyze
-
-      # Webアプリのビルド
       - name: Build the web app
         run: flutter build web --release
 
-      # GitHub Pagesにデプロイ
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web
-          publish_branch: gh-pages  # GitHub Pages用のブランチ
+          path: build/web  # ビルドされたWebアプリのパス
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
