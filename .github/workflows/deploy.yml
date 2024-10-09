@@ -31,7 +31,7 @@ jobs:
         run: flutter pub get
 
       - name: Build the web app
-        run: flutter build web --release --base-href /flutter-test/
+        run: flutter build web --release --base-href /flutter-test/ --web-renderer html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
